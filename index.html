@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>אתגר הסוכרת-יום הסוכרת הבינלאומי 2024 </title>
+    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #0c68b4;
+            --secondary-color: #005075;
+            --accent-color: #008799;
+            --background-color: #E3F2FD;
+            --text-color: #1A237E;
+            --light-text-color: #111e49;
+            --correct-color: #4caf50;
+            --incorrect-color: #f44336;
+            --answer-text-color: #031736;  // כחול כהה יותר לתשובות
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            padding: 0;
+            margin: 0;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--secondary-color), #f3e5f5);
+            padding: 20px 0;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .logo {
+            max-width: 80px;
+            max-height: 80px;
+            margin-right: 10px; /* הקטנת הרווח בין הלוגו לכותרת */
+        }
+
+        h1, h2, h3 {
+            font-size: 2.5em;
+            margin: 0;
+            color: var(--primary-color);
+            font-weight: 300;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+        }
+
+
+
+        #quiz-container {
+            background: linear-gradient(135deg, #0c3e61, #5eb2bd);
+            border-radius: 8px;
+            padding: 30px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-top: 30px;
+            transition: all 0.3s ease;
+        }
+
+        #quiz-container:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .question {
+            font-weight: bold;
+            margin-bottom: 15px;
+            font-size: 1.1em;
+            color: var(--heading-color);
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+        }
+
+        button {
+            margin: 8px 0;
+            padding: 12px;
+            background-color: var(--button-color);
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1em;
+            color: white;
+            text-align: right;
+            width: 100%;
+        }
+
+        button:hover {
+            background-color: var(--accent-color);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        button.selected {
+            background-color: var(--selected-color);
+            color: white;
+            font-weight: bold;
+        }
+
+        .option-letter {
+            font-weight: bold;
+            margin-left: 10px;
+        }
+
+        .button-container {
+            background-color: #f0f0f0;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #next-button, #submit-button, #retry-button {
+            background-color: var(--primary-color);
+            color: var(--light-text-color);
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 25px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-width: 120px;
+            min-height: 44px;
+            text-align: center;
+        }
+
+        #next-button:hover, #submit-button:hover, #retry-button:hover {
+            background-color: var(--secondary-color);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        #result {
+            font-weight: bold;
+            margin-top: 20px;
+            text-align: center;
+            font-size: 1.2em;
+            color: var(--heading-color);
+        }
+
+        .explanation {
+            margin-top: 15px;
+            padding: 15px;
+            background-color: #e8eaf6;
+            border-radius: 5px;
+            font-style: italic;
+            color: #5c6bc0;
+        }
+
+        .review-question {
+            margin-bottom: 30px;
+            padding: 20px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .review-question li {
+            list-style-type: none;
+            padding: 8px;
+            margin: 5px 0;
+            border-radius: 5px;
+        }
+
+        .review-question .correct {
+            background-color: rgba(76, 175, 80, 0.2);
+            color: var(--correct-color);
+            border: 1px solid var(--correct-color);
+        }
+
+        .review-question .incorrect {
+            background-color: rgba(244, 67, 54, 0.2);
+            color: var(--incorrect-color);
+            border: 1px solid var(--incorrect-color);
+        }
+
+        .option-letter {
+            font-weight: bold;
+            margin-left: 10px;
+        }
+
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            border-radius: 10px;
+            padding: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+        }
+
+        .answer {
+            color: var(--answer-text-color);
+            font-weight: ;  // מוסיף מעט עובי לטקסט להגברת הקריאות
+        }
+
+        .image-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            max-width: 800px; /* התאם לפי הצורך */
+            margin-bottom: 2rem;
+        }
+
+        .main-image {
+            width: 30%; /* הקטנה משמעותית של התמונה הראשית */
+            height: auto;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .year-image {
+            width: 70%; /* הגדלה משמעותית של תמונת השנה */
+            height: auto;
+            margin-left: 1rem; /* מרווח בין התמונות */
+        }
+
+        /* לטלפונים ניידים */
+        @media (max-width: 768px) {
+            .image-container {
+                flex-direction: column;
+            }
+
+            .main-image {
+                width: 50%; /* גודל מותאם למסך קטן */
+                margin-bottom: 1rem;
+            }
+
+            .year-image {
+                width: 100%;
+                margin-left: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <h1>אתגר הסוכרת - יום הסוכרת הבינלאומי </h1>
+        </div>
+    </header>
+    <div class="container">
+        <div class="image-container">
+            <img src="כללית1.png" alt="2024" class="year-image">
+        </div>
+        <div id="quiz-container">
+            <div id="question-container"></div>
+            <div class="button-container">
+                <button id="next-button" style="display: none;">השאלה הבאה</button>
+                <button id="submit-button" style="display: none;">הגש מבחן</button>
+            </div>
+            <div id="result"></div>
+        </div>
+        <div id="review-container"></div>
+        <div class="button-container">
+            <button id="retry-button" style="display: none;">נסה שוב</button>
+        </div>
+    </div>
+
+    <script>
+        const questions = [
+            {
+                question: "1.מהי השכיחות העולמית של סוכרת בקרב מבוגרים (בני 18 ומעלה) בשנת 2023 לפי הערכות ארגון הבריאות העולמי (WHO)?",
+                options: ["6.2%", "9.3%", "11.5%", "13.8%"],
+                correct: 1,
+                explanation: "על פי נתוני ארגון הבריאות העולמי (WHO), שכיחות הסוכרת בעולם בקרב מבוגרים נמצאת בעלייה מדאיגה ומוערכת בכ-9.3% בשנת 2023. מדובר במגפה עולמית שמתקדמת בעיקר עקב אורח חיים יושבני ועלייה בשיעורי ההשמנה."
+            },
+            {
+                question: "2. ",
+                options: ["ם", "ם", "ם", "ם"],
+                correct: 0,
+                explanation: "ם"
+            },
+            {
+                question: "2.מה השכיחות של מחלת הסוכרת בישראל בקרב מבוגרים בני 25 ומעלה ",
+                options: ["6.5%", "8.2%", "9%", "11.9%"],
+                correct: 3,
+                explanation: "לפי הנתונים האחרונים שפרסם המרכז הלאומי לבקרת מחלות במשרד הבריאות, בשנת 2022 נכללו ברישום הלאומי בישראל 658,575 חולי סוכרת בני שנתיים ומעלה, המהווים 7.2% מהאוכלוסייה. הימצאות הסוכרת בבני 25 ומעלה הינה 11.9% ואילו הימצאות הסוכרת בבני 65 ומעלה הינה 33.3%"
+            },
+            {
+                question: "3. מה המספר הנכון של כמות מטופלי הסוכרת שיש במחוז ירושלים בקופת חולים כללית?",
+                options: ["10 אלף מטופלים", "20 אלף מטופלים", "30 אלף מטופלים", "40 אלף מטופלים"],
+                correct: 3,
+                explanation: "במחוז ירושלים בשירותי בריאות כללית ישנם כ-40 אלף מטופלים המתמודדים עם מחלת הסוכרת"
+            },
+            {
+                question: "4.מהו אחוז חולי הסוכרת בעולם שמאובחנים עם סוכרת סוג 2? ",
+                options: ["45%", "60", "90%", "95%"],
+                correct: 2,
+                explanation: "סוכרת סוג 2 מהווה את הרוב המוחלט של המקרים, עם כ-90% מהחולים בעולם. מדובר במחלה שמתקדמת באיטיות ומתאפיינת ברגישות נמוכה של התאים לאינסולין, דבר שקשור לרוב לאורח חיים ותזונה לקויה"
+            },
+            {
+                question: "5.כמה אחוזים מהאוכלוסייה בעולם עם סוכרת נמצאים בסיכון לפתח סיבוכי רגל סוכרתית במהלך חייהם? ",
+                options: ["5%", "15%", "30%", "40%"],
+                correct: 1,
+                explanation: "כ-15% מחולי הסוכרת מפתחים סיבוכי רגל סוכרתית במהלך חייהם, כתוצאה מפגיעות עצביות, זרימת דם ירודה וזיהומים הנגרמים עקב רמות סוכר לא מאוזנות"
+            },
+            {
+                question: "6.כמה זמן בממוצע עובר עד לאבחון סוכרת סוג 2 לאחר שהמחלה מתחילה להתפתח בגוף? ",
+                options: ["שנתיים", "5 שנים", "עשר שנים", "12 שנה"],
+                correct: 2,
+                explanation: "פעמים רבות סוכרת סוג 2 מתפתחת באיטיות ולא מופיעה באופן סימפטומטי. לכן, עלולים לעבור בממוצע כ-10 שנים עד שהמחלה מאובחנת, במיוחד אם לא מבוצעות בדיקות שגרתיות"
+            },
+            {
+                question: "7.מהו המדד הסטנדרטי המשמש להערכת מצב האיזון הגליקמי של חולי סוכרת לאורך זמן? ",
+                options: ["בדיקת רמות גלוקוז בצום", "בדיקת HBA1C", "בדיקת גלוקוז בשתן", "בדיקת רמות אינסולין"],
+                correct: 1,
+                explanation: "בדיקת HBA1C מודדת את אחוז ההמוגלובין המסוכרר בדם, ומהווה אינדיקציה לממוצע רמות הסוכר בדם בשלושת החודשים האחרונים. היא כלי חשוב לניטור וטיפול בחולי סוכרת"
+            },
+            {
+                question: "8. מה ההבדל המרכזי בין סוכרת סוג 1 לסוכרת סוג 2?",
+                options: ["סוכרת סוג 1 נובעת מהרס תאי הבטא בלבלב, סוכרת סוג 2 נובעת מעמידות לאינסולין", "סוכרת סוג 1 מתפתחת רק בילדים, סוג 2 מתפתחת רק במבוגרים", "סוכרת סוג 1 קשורה להשמנה, סוג 2 נובעת מפעילות גופנית מועטה", "אין הבדל, שתיהן נובעות מהפרעות הורמונליות"],
+                correct: 0,
+                explanation: "סוכרת סוג 1 היא מחלה אוטואימונית, שבה מערכת החיסון תוקפת את תאי הבטא בלבלב שאחראים על ייצור האינסולין. סוכרת סוג 2 נובעת בעיקר מעמידות של התאים לאינסולין, ונפוצה בקרב מבוגרים."
+            },
+            {
+                question: "9.כל כמה זמן מומלץ לחולי סוכרת לעבור בדיקת כף רגל לצורך מניעת סיבוכים? ",
+                options: ["פעם בחודש", "פעם בשלושה חודשים", "פעם בשנה", "כל שנתיים"],
+                correct: 2,
+                explanation: " חולי סוכרת צריכים לעבור בדיקת כף רגל לפחות פעם בשנה. הבדיקה עוזרת לזהות פציעות, יבלות או זיהומים שעלולים להתפתח לכיבים ולסיבוכים נוספים, כולל קטיעות, אם לא יטופלו בזמן."
+            },
+            {
+                question: "10.כל כמה זמן מומלץ לחולי סוכרת לעבור בדיקת עיניים למעקב אחר סיבוכים רטינופתיים? ",
+                options: ["פעם בשנה", "כל שנתיים", "פעם בחמש שנים", "כל חצי שנה"],
+                correct: 0,
+                explanation: " רטינופתיה סוכרתית היא אחד הסיבוכים הנפוצים של סוכרת, ולכן חולים בסוכרת צריכים לעבור בדיקת עיניים לפחות פעם בשנה כדי לזהות שינויים בכלי הדם ברשתית העלולים לגרום לאובדן ראייה."
+            },
+            {
+                question: "11. מהו המעקב המומלץ לבדיקת שומנים בדם (ליפידים) בחולי סוכרת?",
+                options: ["פעם בשבוע", "פעם בשנה", "פעם בחצי שנה", "פעם בשלושה חודשים"],
+                correct: 0,
+                explanation: "מעקב אחר שומנים בדם, כולל כולסטרול וטריגליצרידים, מומלץ פעם בשנה אצל חולי סוכרת כדי לזהות ולהפחית את הסיכון למחלות לב וכלי דם, שהן סיבוך נפוץ של סוכרת"
+            },
+            {
+                question: "12.כל כמה זמן מומלץ לחולי סוכרת לעבור בדיקת HBA1C כדי לעקוב אחר האיזון הגליקמי שלהם? ",
+                options: ["כל שלושה חודשים", "כל חצי שנה", "כל שנה", "פעם בחודש"],
+                correct: 0,
+                explanation: "בדיקת HBA1C מומלצת כל שלושה חודשים כדי לעקוב אחר איזון הסוכר בדם לאורך זמן. במקרים של חולים שמאוזנים היטב, ניתן לבצע את הבדיקה גם כל חצי שנה."
+            },
+            {
+                question: "13.כל כמה זמן מומלץ לחולי סוכרת לעבור בדיקות תפקודי כליה (כגון מיקרואלבומין בשתן)? ",
+                options: ["פעם בחודש", "פעם בחצי שנה", "פעם בשנה", "כל שנתיים"],
+                correct: 2,
+                explanation: "בדיקות תפקודי כליה, כמו מיקרואלבומין בשתן, מומלצות לפחות פעם בשנה בחולי סוכרת, משום שסוכרת היא גורם סיכון מוביל לפגיעה בכליות (נפרופתיה סוכרתית). מעקב קבוע עוזר לזהות סימנים מוקדמים של נזק כלייתי."
+            },
+            // ... (הוסף את כל 30 השאלות כאן) ...
+        ];
+
+        let currentQuestion = 0;
+        let userAnswers = [];
+
+        const questionContainer = document.getElementById('question-container');
+        const nextButton = document.getElementById('next-button');
+        const submitButton = document.getElementById('submit-button');
+        const resultContainer = document.getElementById('result');
+        const reviewContainer = document.getElementById('review-container');
+        const retryButton = document.getElementById('retry-button');
+
+        function loadQuestion() {
+            const question = questions[currentQuestion];
+            let optionsHTML = '';
+            const letters = ['א', 'ב', 'ג', 'ד'];
+            for (let i = 0; i < question.options.length; i++) {
+                optionsHTML += `<button onclick="selectAnswer(${i})" id="o${i}"><span class="option-letter">${letters[i]}</span> ${question.options[i]}</button>`;
+            }
+            questionContainer.innerHTML = `
+                <div class="question">${question.question}</div>
+                <div class="options">${optionsHTML}</div>
+            `;
+            document.querySelector('.button-container').style.display = 'flex';
+            nextButton.style.display = 'none';
+            submitButton.style.display = 'none';
+        }
+
+        function selectAnswer(optionIndex) {
+            userAnswers[currentQuestion] = optionIndex;
+            const buttons = document.querySelectorAll('[id^="o"]');
+            buttons.forEach(button => button.classList.remove('selected'));
+            document.getElementById(`o${optionIndex}`).classList.add('selected');
+            if (currentQuestion === questions.length - 1) {
+                nextButton.style.display = 'none';
+                submitButton.style.display = 'block';
+            } else {
+                nextButton.style.display = 'block';
+                submitButton.style.display = 'none';
+            }
+        }
+
+        function nextQuestion() {
+            currentQuestion++;
+            if (currentQuestion < questions.length) {
+                loadQuestion();
+            } else {
+                questionContainer.innerHTML = '';
+                nextButton.style.display = 'none';
+                submitButton.style.display = 'block';
+            }
+        }
+
+        function submitQuiz() {
+            let score = 0;
+            for (let i = 0; i < questions.length; i++) {
+                if (userAnswers[i] === questions[i].correct) {
+                    score++;
+                }
+            }
+            const percentage = (score / questions.length) * 100;
+            resultContainer.innerHTML = `הציון שלך: ${percentage.toFixed(2)}%`;
+            showReview();
+            submitButton.style.display = 'none';
+            retryButton.style.display = 'block';
+        }
+
+        function showReview() {
+            let reviewHTML = '';
+            const letters = ['א', 'ב', 'ג', 'ד'];
+            for (let i = 0; i < questions.length; i++) {
+                const question = questions[i];
+                reviewHTML += `
+                    <div class="review-question">
+                        <p><strong>${question.question}</strong></p>
+                        <ul>
+                            ${question.options.map((option, index) => `
+                                <li class="${index === question.correct ? 'correct' : (index === userAnswers[i] && index !== question.correct ? 'incorrect' : '')}">
+                                    <span class="option-letter">${letters[index]}</span> ${option}
+                                    ${index === question.correct ? ' ✓' : (index === userAnswers[i] && index !== question.correct ? ' ✗' : '')}
+                                </li>
+                            `).join('')}
+                        </ul>
+                        <div class="explanation"><strong>הסבר:</strong> ${question.explanation}</div>
+                    </div>
+                `;
+            }
+            
+            reviewContainer.innerHTML = reviewHTML;
+            retryButton.style.display = 'block';
+        }
+
+        function retryQuiz() {
+            currentQuestion = 0;
+            userAnswers = [];
+            resultContainer.innerHTML = '';
+            reviewContainer.innerHTML = '';
+            retryButton.style.display = 'none';
+            loadQuestion();
+        }
+
+        nextButton.addEventListener('click', nextQuestion);
+        submitButton.addEventListener('click', submitQuiz);
+        retryButton.addEventListener('click', retryQuiz);
+
+        loadQuestion();
+    </script>
+</body>
+</html>
